@@ -10,8 +10,8 @@ git clone https://github.com/gbox3d/scratch-gui.git
 
 ### scratch-vm 실행하기
 
-```bash
-gui 와 vm 중 에서 vm을 먼저 실행한다. 다음에 gui를 실행한다.  
+gui 와 vm 중 에서 vm을 먼저 실행한다. 다음에 gui를 실행한다.   
+
 ```bash
 # vm 실행
 cd scratch-vm
