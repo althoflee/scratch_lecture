@@ -52,10 +52,15 @@ npm start
 
 만약 확장기능을 추가하지않는 다면 위의과정( scratch-gui )으로 실행하면 된다.  
 
-### 확장기능 추가하기
+## 확장기능 추가하기
 
 확장기능을 추가하기 위해서는 scratch-vm을 수정해야 한다.  
+
+### 확장기능 소스 폴더 추가하기  
+
 원하는 scratch3_확장이름 을 만들고 그안에 index.js 파일을 만든다.  
+경로는 scratch-vm/src/extensions/ 에 폴더를 만들고 그안에 확장 기능 모듈 소스를 만들어 넣는다.  
+맨처음으로 index.js 파일을 추가한다.    
 
 예>
 scratch-vm/src/extensions/scratch3_hello/index.js
@@ -89,4 +94,17 @@ class Scratch3HelloBlocks {
 
 module.exports = Scratch3HelloBlocks;
     
+```
+
+### 확장기능을 등록하기
+scratch-vm/src/extension-support/extension-manager.js 파일에 추가한 확장을 등록한다.  
+
+```javascript
+
+const builtinExtensions = {
+    // 기존 확장들...
+    pen: () => require('../extensions/scratch3_pen'),
+    hello: () => require('../extensions/scratch3_hello') // 추가된 부분
+};
+
 ```
