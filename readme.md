@@ -108,3 +108,52 @@ const builtinExtensions = {
 };
 
 ```
+
+### 확장기능을 gui 에 추가하기
+
+scratch-gui/src/lib/libraries/extensions/확장이름 폴더를 만들고 그안에 확장기능에 대한 아이콘 이미지 파일을 넣는다.  
+
+예>
+```txt
+scratch-gui/src/lib/libraries/extensions/hello/hello.png
+scratch-gui/src/lib/libraries/extensions/hello/hello-small.png
+```
+<img src="./hello_extension/gui/hello/hello.png" width=100 />
+<img src="./hello_extension/gui/hello/hello-small.png" width=100 />
+
+
+
+scratch-gui/src/lib/libraries/extensions/index.jsx 파일에 확장기능을 추가한다.   
+
+```javascript
+import helloIconURL from './hello/hello.png';
+import helloInsetIconURL from './hello/hello-small.png';
+
+// ... 기존 import 구문들 ...
+
+export default [
+    // ... 기존 확장들 ...
+    {
+        name: (
+            <FormattedMessage
+                defaultMessage="Hello"
+                description="Name for the 'Hello' extension"
+                id="gui.extension.hello.name"
+            />
+        ),
+        extensionId: 'hello',
+        iconURL: helloIconURL,
+        insetIconURL: helloInsetIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Returns hello message."
+                description="Description for the 'Hello' extension"
+                id="gui.extension.hello.description"
+            />
+        ),
+        featured: true
+    },
+    // ... 나머지 확장들 ...
+];
+
+```
