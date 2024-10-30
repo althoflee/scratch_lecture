@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SerialPort WebSocket Client</title>
+</head>
+<body>
+    <h1>SerialPort WebSocket Client</h1>
+    <button id="scanPortsButton">Scan Ports</button>
+    <select id="portsList"></select>
+    <button id="connectPortButton">Connect</button>
+    <input type="text" id="dataInput" placeholder="Data to send">
+    <button id="sendDataButton">Send Data</button>
+    <div id="log"></div>
+
+    <script>
+        const ws = new WebSocket('ws://localhost:25680');
+        const logDiv = document.getElementById('log');
+
+        function log(message) {
+            const p = document.createElement('p');
+            p.textContent = message;
+            logDiv.appendChild(p);
+        }
+
+        ws.onopen = () => {
+            log('WebSocket connection established');
+        };
+
+        ws.onmessage = (event) => {
+            const message = JSON.parse(event.data);
+            if (message.action === 'portsList') {
+                const portsList = document.getElementById('portsList');
+                portsList.innerHTML = '';
+                message.ports.forEach(port => {
+                    const option = document.createElement('option');
+                    option.value = port;
+                    option.textContent = port;
+                    portsList.appendChild(option);
+                });
+                log('Available ports listed');
+            } else if (message.action === 'connected') {
+                log(`Connected to port: ${message.port}`);
+            } else if (message.action === 'serialData') {
+                log(`Received data from serial: ${message.data}`);
+            } else if (message.action === 'error') {
+                log(`Error: ${message.message}`);
+            }
+        };
+
+        ws.onclose = () => {
+            log('WebSocket connection closed');
+        };
+
+        document.getElementById('scanPortsButton').addEventListener('click', () => {
+            ws.send(JSON.stringify({ action: 'scanPorts' }));
+        });
+
+        document.getElementById('connectPortButton').addEventListener('click', () => {
+            const selectedPort = document.getElementById('portsList').value;
+            if (selectedPort) {
+                ws.send(JSON.stringify({ action: 'connectPort', port: selectedPort }));
+            } else {
+                log('Please select a port first');
+            }
+        });
+
+        document.getElementById('sendDataButton').addEventListener('click', () => {
+            const data = document.getElementById('dataInput').value;
+            if (data) {
+                ws.send(JSON.stringify({ action: 'writeData', data: data }));
+                log(`Sent data: ${data}`);
+            } else {
+                log('Please enter data to send');
+            }
+        });
+    </script>
+</body>
+</html>
