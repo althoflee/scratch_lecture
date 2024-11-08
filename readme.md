@@ -49,8 +49,20 @@ npm link scratch-vm # 원래 package.json 에 있는 scratch-vm 대신에 위에
 
 npm start
 ```
+확장 기능을 추가하지 않는다면 위의 과정으로 scratch-gui를 실행할 수 있습니다.   
 
-만약 확장기능을 추가하지않는 다면 위의과정( scratch-gui )으로 실행하면 된다.  
+npm link 명령어는 로컬에서 개발 중인 패키지를 다른 프로젝트에서 의존성으로 사용할 수 있게 해줍니다. scratch-gui는 기본적으로 package.json에 명시된 버전의 scratch-vm을 사용합니다. 그러나 확장 기능을 추가하거나 scratch-vm의 코드를 수정하려는 경우, 로컬에서 수정한 내용을 scratch-gui에서 바로 반영하기 위해 npm link를 사용하여 두 패키지를 연결합니다. 따라서, 확장 기능을 추가하지 않고 기본적인 사용만 한다면 npm link를 사용할 필요가 없습니다.
+
+
+**특정 포트로 실행시키기**  
+```bash
+PORT=8080 npm start
+```
+**윈도우의 처럼 리눅스쉘이 아닌경우 cross-env 를 사용한다.**  
+```bash
+npm install --save-dev cross-env
+cross-env PORT=3000 webpack serve
+```
 
 ## 확장기능 추가하기
 
